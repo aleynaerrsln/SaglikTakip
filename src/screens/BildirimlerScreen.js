@@ -12,7 +12,7 @@ const baslangicBildirimler = [
   {
     id: 1,
     baslik: 'Egzersiz Hatırlatması',
-    mesaj: 'Bugünkü KOAH egzersizlerinizi yapmayı unutmayın! Düzenli egzersiz solunum kapasitenizi artırır.',
+    mesaj: 'Bugünkü egzersizlerinizi yapmayı unutmayın! Düzenli egzersiz gebelikte sağlığınızı korur.',
     tarih: '03.03.2026 09:00',
     okundu: false,
     tur: 'egzersiz',

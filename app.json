@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "KOAH Egzersiz",
-    "slug": "koah-egzersiz",
+    "name": "SağlıkTakip",
+    "slug": "saglik-takip",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -10,18 +10,18 @@
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#E74C4C"
+      "backgroundColor": "#E8577D"
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.koahegzersiz.app"
+      "bundleIdentifier": "com.sagliktakip.app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#E74C4C"
+        "backgroundColor": "#E8577D"
       },
-      "package": "com.koahegzersiz.app"
+      "package": "com.sagliktakip.app"
     },
     "web": {
       "favicon": "./assets/favicon.png"

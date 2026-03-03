@@ -54,7 +54,7 @@ export default function EgitimlerScreen({ navigation }) {
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
           <Text style={styles.backIcon}>{'<'}</Text>
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>KOAH Egzersiz</Text>
+        <Text style={styles.headerTitle}>Egzersizler</Text>
         <View style={{ width: 36 }} />
       </View>
 

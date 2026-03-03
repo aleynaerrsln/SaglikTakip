@@ -18,22 +18,22 @@ const bmiKategorileri = [
   { min: 30, max: 100, ad: 'Obez', renk: '#E74C3C', emoji: '🔴' },
 ];
 
-const koahTavsiyeler = [
+const gebelikTavsiyeler = [
   {
     kategori: 'Zayıf',
-    tavsiye: 'KOAH hastalarında düşük kilo, solunum kaslarının zayıflamasına neden olabilir. Protein ve kalori alımınızı artırmanız önerilir. Diyetisyeninize danışın.',
+    tavsiye: 'Gebelikte düşük kilo, bebeğin gelişimini olumsuz etkileyebilir. Protein ve kalori alımınızı artırmanız önerilir. Doktorunuza ve diyetisyeninize danışın.',
   },
   {
     kategori: 'Normal',
-    tavsiye: 'İdeal kilonuzdasınız! Bu kiloyu korumak solunum fonksiyonlarınız için çok önemlidir. Dengeli beslenmeye ve düzenli egzersize devam edin.',
+    tavsiye: 'İdeal kilonuzdasınız! Gebelikte 11-16 kg arası kilo alımı normaldir. Dengeli beslenmeye ve düzenli egzersize devam edin.',
   },
   {
     kategori: 'Fazla Kilolu',
-    tavsiye: 'Fazla kilo, diyaframa baskı yaparak nefes almayı zorlaştırabilir. Dengeli beslenme ve hafif egzersizlerle kilo kontrolü sağlamanız önerilir.',
+    tavsiye: 'Gebelikte fazla kilo, gestasyonel diyabet ve preeklampsi riskini artırabilir. Doktorunuzla birlikte sağlıklı beslenme planı oluşturun.',
   },
   {
     kategori: 'Obez',
-    tavsiye: 'Obezite, KOAH semptomlarını ciddi şekilde kötüleştirebilir. Acil olarak diyetisyen ve doktorunuzla görüşerek kilo verme programı oluşturmanız önerilir.',
+    tavsiye: 'Gebelikte obezite, anne ve bebek sağlığı için risk oluşturabilir. Doktorunuzla düzenli takip ve uygun beslenme programı oluşturmanız önerilir.',
   },
 ];
 
@@ -52,7 +52,7 @@ export default function BMIHesaplayiciScreen() {
 
     const bmi = kiloKg / (boyM * boyM);
     const kategori = bmiKategorileri.find((k) => bmi >= k.min && bmi < k.max) || bmiKategorileri[3];
-    const tavsiye = koahTavsiyeler.find((t) => t.kategori === kategori.ad);
+    const tavsiye = gebelikTavsiyeler.find((t) => t.kategori === kategori.ad);
 
     setSonuc({
       bmi: bmi.toFixed(1),
@@ -182,9 +182,9 @@ export default function BMIHesaplayiciScreen() {
               ))}
             </View>
 
-            {/* KOAH Tavsiye */}
+            {/* Gebelik Tavsiye */}
             <View style={[styles.tavsiyeCard, { borderLeftColor: sonuc.kategori.renk }]}>
-              <Text style={styles.tavsiyeBaslik}>KOAH ve Kilo Yönetimi</Text>
+              <Text style={styles.tavsiyeBaslik}>Gebelik ve Kilo Yönetimi</Text>
               <Text style={styles.tavsiyeText}>{sonuc.tavsiye}</Text>
             </View>
 
@@ -205,8 +205,8 @@ export default function BMIHesaplayiciScreen() {
             </Text>
             <Text style={styles.bilgiFormul}>BMI = Kilo (kg) / Boy² (m)</Text>
             <Text style={styles.bilgiText}>
-              KOAH hastalarında ideal kiloda olmak, solunum fonksiyonlarını doğrudan etkiler.
-              Hem fazla kilo hem de düşük kilo KOAH semptomlarını kötüleştirebilir.
+              Gebelikte ideal kiloda olmak, anne ve bebek sağlığını doğrudan etkiler.
+              Hem fazla kilo hem de düşük kilo gebelik komplikasyonlarına yol açabilir.
             </Text>
           </View>
         )}

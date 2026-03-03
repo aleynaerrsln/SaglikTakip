@@ -526,44 +526,7 @@ export default function App() {
         <Stack.Screen
           name="Anasayfa"
           component={AnasayfaScreen}
-          options={({ navigation }) => ({
-            title: 'Anasayfa',
-            headerBackVisible: false,
-            headerRight: () => (
-              <TouchableOpacity
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  backgroundColor: 'rgba(255,255,255,0.2)',
-                  paddingHorizontal: 12,
-                  paddingVertical: 6,
-                  borderRadius: 18,
-                }}
-                onPress={() => {
-                  Alert.alert(
-                    'Çıkış Yap',
-                    'Hesabınızdan çıkış yapmak istediğinize emin misiniz?',
-                    [
-                      { text: 'İptal', style: 'cancel' },
-                      {
-                        text: 'Çıkış Yap',
-                        style: 'destructive',
-                        onPress: () => {
-                          navigation.reset({
-                            index: 0,
-                            routes: [{ name: 'Giris' }],
-                          });
-                        },
-                      },
-                    ]
-                  );
-                }}
-              >
-                <Text style={{ fontSize: 16, marginRight: 4 }}>👤</Text>
-                <Text style={{ color: '#FFFFFF', fontSize: 13, fontWeight: '600' }}>Çıkış</Text>
-              </TouchableOpacity>
-            ),
-          })}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="Formlar"
