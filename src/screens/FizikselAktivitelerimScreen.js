@@ -70,6 +70,12 @@ export default function FizikselAktivitelerimScreen() {
     ]);
   };
 
+  const durumGuncelle = (id) => {
+    setAktiviteler(aktiviteler.map((a) =>
+      a.id === id ? { ...a, durum: 'Yapıldı' } : a
+    ));
+  };
+
   return (
     <View style={styles.container}>
       {/* Üst Bar */}
@@ -85,7 +91,7 @@ export default function FizikselAktivitelerimScreen() {
           <Text style={styles.bosText}>Henüz aktivite eklenmemiş.</Text>
         ) : (
           aktiviteler.map((aktivite, index) => (
-            <View key={aktivite.id} style={styles.card}>
+            <View key={aktivite.id} style={[styles.card, { borderColor: aktivite.durum === 'Yapıldı' ? colors.success : colors.danger }]}>
               <View style={styles.cardHeader}>
                 <Text style={styles.cardTitle}>{index + 1}. Gün Aktivitesi</Text>
                 <TouchableOpacity style={styles.silBtn} onPress={() => aktiviteSil(aktivite.id)}>
@@ -113,6 +119,15 @@ export default function FizikselAktivitelerimScreen() {
                 <Text style={styles.label}>Aktivite Tarih-saat:</Text>
                 <Text style={styles.value}>{aktivite.tarihSaat}</Text>
               </View>
+
+              {aktivite.durum === 'Yapılmadı' && (
+                <TouchableOpacity
+                  style={styles.yapildiBtn}
+                  onPress={() => durumGuncelle(aktivite.id)}
+                >
+                  <Text style={styles.yapildiBtnText}>✓ Yapıldı Olarak İşaretle</Text>
+                </TouchableOpacity>
+              )}
             </View>
           ))
         )}
@@ -270,6 +285,18 @@ const styles = StyleSheet.create({
   },
   silBtnText: {
     fontSize: 16,
+  },
+  yapildiBtn: {
+    backgroundColor: colors.success,
+    borderRadius: 8,
+    paddingVertical: 10,
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  yapildiBtnText: {
+    color: colors.white,
+    fontWeight: 'bold',
+    fontSize: 14,
   },
   // Modal
   modalOverlay: {

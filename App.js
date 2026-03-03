@@ -8,6 +8,12 @@ import FormlarScreen from './src/screens/FormlarScreen';
 import GunlukHedeflerScreen from './src/screens/GunlukHedeflerScreen';
 import KanSekeriIzlemScreen from './src/screens/KanSekeriIzlemScreen';
 import FizikselAktivitelerimScreen from './src/screens/FizikselAktivitelerimScreen';
+import BeslenmeEklemeScreen from './src/screens/BeslenmeEklemeScreen';
+import EgitimlerScreen from './src/screens/EgitimlerScreen';
+import SSSScreen from './src/screens/SSSScreen';
+import BildirimlerScreen from './src/screens/BildirimlerScreen';
+import AnketScreen from './src/screens/AnketScreen';
+import IlacHatirlaticiScreen from './src/screens/IlacHatirlaticiScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -47,6 +53,36 @@ export default function App() {
           name="FizikselAktivitelerim"
           component={FizikselAktivitelerimScreen}
           options={{ title: 'Fiziksel Aktivitelerim' }}
+        />
+        <Stack.Screen
+          name="BeslenmeEkleme"
+          component={BeslenmeEklemeScreen}
+          options={{ title: 'Beslenme Ekleme Formu' }}
+        />
+        <Stack.Screen
+          name="Egitimler"
+          component={EgitimlerScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="SSS"
+          component={SSSScreen}
+          options={{ title: 'Sıkça Sorulan Sorular' }}
+        />
+        <Stack.Screen
+          name="Bildirimler"
+          component={BildirimlerScreen}
+          options={{ title: 'Bildirimler' }}
+        />
+        <Stack.Screen
+          name="Anket"
+          component={AnketScreen}
+          options={{ title: 'Anket' }}
+        />
+        <Stack.Screen
+          name="IlacHatirlatici"
+          component={IlacHatirlaticiScreen}
+          options={{ title: 'İlaç Hatırlatıcı' }}
         />
       </Stack.Navigator>
     </NavigationContainer>

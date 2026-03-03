@@ -15,7 +15,7 @@ const menuItems = [
   { id: 'sss', title: 'SSS', emoji: '❓', screen: 'SSS' },
   { id: 'bildirimler', title: 'Bildirimler', emoji: '🔔', screen: 'Bildirimler' },
   { id: 'anket', title: 'Anket', emoji: '🏃', screen: 'Anket' },
-  { id: 'whatsapp', title: 'Whatsapp Acil', emoji: '📅', screen: 'Whatsapp' },
+  { id: 'ilacHatirlatici', title: 'İlaç Hatırlatıcı', emoji: '💊', screen: 'IlacHatirlatici' },
 ];
 
 export default function AnasayfaScreen({ navigation }) {
