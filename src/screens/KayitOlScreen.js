@@ -13,36 +13,44 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import colors from '../constants/colors';
 
-export default function GirisScreen({ navigation }) {
+export default function KayitOlScreen({ navigation }) {
+  const [adSoyad, setAdSoyad] = useState('');
   const [kullaniciAdi, setKullaniciAdi] = useState('');
   const [sifre, setSifre] = useState('');
+  const [sifreTekrar, setSifreTekrar] = useState('');
   const [sifreGizli, setSifreGizli] = useState(true);
 
-  const girisYap = async () => {
-    if (!kullaniciAdi.trim() || !sifre.trim()) {
-      Alert.alert('Uyarı', 'Kullanıcı adı ve şifre giriniz.');
+  const kayitOl = async () => {
+    if (!adSoyad.trim() || !kullaniciAdi.trim() || !sifre.trim()) {
+      Alert.alert('Uyarı', 'Tüm alanları doldurunuz.');
+      return;
+    }
+
+    if (sifre !== sifreTekrar) {
+      Alert.alert('Uyarı', 'Şifreler eşleşmiyor.');
+      return;
+    }
+
+    if (sifre.length < 4) {
+      Alert.alert('Uyarı', 'Şifre en az 4 karakter olmalıdır.');
       return;
     }
 
     try {
-      const kayitliKullanici = await AsyncStorage.getItem('kayitliKullanici');
-      if (kayitliKullanici) {
-        const kullanici = JSON.parse(kayitliKullanici);
-        if (kullanici.kullaniciAdi === kullaniciAdi && kullanici.sifre === sifre) {
-          navigation.reset({
-            index: 0,
-            routes: [{ name: 'Anasayfa', params: { kullaniciAdi: kullanici.adSoyad || kullaniciAdi } }],
-          });
-          return;
-        } else {
-          Alert.alert('Hata', 'Kullanıcı adı veya şifre yanlış.');
-          return;
-        }
-      } else {
-        Alert.alert('Hata', 'Kayıtlı kullanıcı bulunamadı. Lütfen önce kayıt olunuz.');
-      }
+      const kullanici = {
+        adSoyad: adSoyad.trim(),
+        kullaniciAdi: kullaniciAdi.trim(),
+        sifre: sifre,
+      };
+      await AsyncStorage.setItem('kayitliKullanici', JSON.stringify(kullanici));
+
+      Alert.alert(
+        'Kayıt Başarılı',
+        'Hesabınız oluşturuldu. Giriş yapabilirsiniz.',
+        [{ text: 'Giriş Yap', onPress: () => navigation.goBack() }]
+      );
     } catch (e) {
-      Alert.alert('Hata', 'Bir sorun oluştu.');
+      Alert.alert('Hata', 'Kayıt sırasında bir sorun oluştu.');
     }
   };
 
@@ -55,36 +63,45 @@ export default function GirisScreen({ navigation }) {
         contentContainerStyle={styles.scrollContent}
         keyboardShouldPersistTaps="handled"
       >
-        {/* Üst Kısım - Modern İllüstrasyon */}
+        {/* Üst Kısım */}
         <View style={styles.ustKisim}>
-          {/* Dekoratif daireler */}
           <View style={styles.dekorDaire1} />
           <View style={styles.dekorDaire2} />
-          <View style={styles.dekorDaire3} />
 
-          {/* Ana illüstrasyon */}
           <View style={styles.illustrationContainer}>
             <View style={styles.outerGlow} />
-            <View style={styles.middleGlow} />
             <View style={styles.innerCircle}>
-              <Text style={styles.illustrationEmoji}>🤰</Text>
+              <Text style={styles.illustrationEmoji}>👶</Text>
             </View>
           </View>
 
-          {/* Başlık */}
-          <Text style={styles.appTitle}>Sağlık Takip</Text>
-          <Text style={styles.appSubtitle}>Gebelik Sağlık Uygulaması</Text>
+          <Text style={styles.appTitle}>Hesap Oluştur</Text>
+          <Text style={styles.appSubtitle}>Sağlık takibinize hemen başlayın</Text>
         </View>
 
-        {/* Alt Kısım - Form */}
+        {/* Form */}
         <View style={styles.formCard}>
-          <Text style={styles.girisBaslik}>Giriş Yap</Text>
-          <View style={styles.baslikCizgi} />
+          {/* Ad Soyad */}
+          <View style={styles.inputContainer}>
+            <View style={styles.inputIconContainer}>
+              <Text style={styles.inputIconText}>👤</Text>
+            </View>
+            <View style={styles.inputWrapper}>
+              <Text style={styles.inputLabel}>Ad Soyad</Text>
+              <TextInput
+                style={styles.input}
+                value={adSoyad}
+                onChangeText={setAdSoyad}
+                placeholder="Adınız ve soyadınız"
+                placeholderTextColor="#BBBBBB"
+              />
+            </View>
+          </View>
 
           {/* Kullanıcı Adı */}
           <View style={styles.inputContainer}>
             <View style={styles.inputIconContainer}>
-              <Text style={styles.inputIconText}>👤</Text>
+              <Text style={styles.inputIconText}>📧</Text>
             </View>
             <View style={styles.inputWrapper}>
               <Text style={styles.inputLabel}>Kullanıcı Adı</Text>
@@ -92,7 +109,7 @@ export default function GirisScreen({ navigation }) {
                 style={styles.input}
                 value={kullaniciAdi}
                 onChangeText={setKullaniciAdi}
-                placeholder="Kullanıcı adınızı giriniz"
+                placeholder="Kullanıcı adınızı belirleyin"
                 placeholderTextColor="#BBBBBB"
                 autoCapitalize="none"
               />
@@ -111,7 +128,7 @@ export default function GirisScreen({ navigation }) {
                   style={[styles.input, { flex: 1 }]}
                   value={sifre}
                   onChangeText={setSifre}
-                  placeholder="Şifrenizi giriniz"
+                  placeholder="En az 4 karakter"
                   placeholderTextColor="#BBBBBB"
                   secureTextEntry={sifreGizli}
                 />
@@ -125,16 +142,34 @@ export default function GirisScreen({ navigation }) {
             </View>
           </View>
 
-          {/* Giriş Butonu */}
-          <TouchableOpacity style={styles.girisBtn} onPress={girisYap} activeOpacity={0.8}>
-            <Text style={styles.girisBtnText}>GİRİŞ</Text>
+          {/* Şifre Tekrar */}
+          <View style={styles.inputContainer}>
+            <View style={styles.inputIconContainer}>
+              <Text style={styles.inputIconText}>🔐</Text>
+            </View>
+            <View style={styles.inputWrapper}>
+              <Text style={styles.inputLabel}>Şifre Tekrar</Text>
+              <TextInput
+                style={styles.input}
+                value={sifreTekrar}
+                onChangeText={setSifreTekrar}
+                placeholder="Şifrenizi tekrar giriniz"
+                placeholderTextColor="#BBBBBB"
+                secureTextEntry={sifreGizli}
+              />
+            </View>
+          </View>
+
+          {/* Kayıt Ol Butonu */}
+          <TouchableOpacity style={styles.kayitBtn} onPress={kayitOl} activeOpacity={0.8}>
+            <Text style={styles.kayitBtnText}>KAYIT OL</Text>
           </TouchableOpacity>
 
-          {/* Kayıt Ol */}
-          <View style={styles.kayitRow}>
-            <Text style={styles.kayitText}>Hesabınız yok mu? </Text>
-            <TouchableOpacity onPress={() => navigation.navigate('KayitOl')}>
-              <Text style={styles.kayitLink}>Kayıt Ol</Text>
+          {/* Giriş Yap */}
+          <View style={styles.girisRow}>
+            <Text style={styles.girisText}>Zaten hesabınız var mı? </Text>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Text style={styles.girisLink}>Giriş Yap</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -151,75 +186,58 @@ const styles = StyleSheet.create({
   scrollContent: {
     flexGrow: 1,
   },
-  // Üst kısım
   ustKisim: {
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: 320,
-    paddingTop: 60,
-    paddingBottom: 20,
+    minHeight: 240,
+    paddingTop: 50,
+    paddingBottom: 16,
   },
   dekorDaire1: {
     position: 'absolute',
-    top: 20,
-    right: -30,
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    top: 30,
+    left: -20,
+    width: 80,
+    height: 80,
+    borderRadius: 40,
     backgroundColor: 'rgba(255,255,255,0.06)',
   },
   dekorDaire2: {
     position: 'absolute',
-    top: 80,
-    left: -20,
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    bottom: 20,
+    right: -10,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
     backgroundColor: 'rgba(255,255,255,0.08)',
-  },
-  dekorDaire3: {
-    position: 'absolute',
-    bottom: 40,
-    right: 30,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'rgba(255,255,255,0.05)',
   },
   illustrationContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: 180,
-    height: 180,
-    marginBottom: 16,
+    width: 130,
+    height: 130,
+    marginBottom: 12,
   },
   outerGlow: {
     position: 'absolute',
-    width: 180,
-    height: 180,
-    borderRadius: 90,
+    width: 130,
+    height: 130,
+    borderRadius: 65,
     backgroundColor: 'rgba(255,255,255,0.08)',
   },
-  middleGlow: {
-    position: 'absolute',
-    width: 140,
-    height: 140,
-    borderRadius: 70,
-    backgroundColor: 'rgba(255,255,255,0.12)',
-  },
   innerCircle: {
-    width: 110,
-    height: 110,
-    borderRadius: 55,
+    width: 90,
+    height: 90,
+    borderRadius: 45,
     backgroundColor: 'rgba(255,255,255,0.18)',
     alignItems: 'center',
     justifyContent: 'center',
   },
   illustrationEmoji: {
-    fontSize: 60,
+    fontSize: 45,
   },
   appTitle: {
-    fontSize: 26,
+    fontSize: 24,
     fontWeight: 'bold',
     color: colors.white,
     letterSpacing: 1,
@@ -229,7 +247,6 @@ const styles = StyleSheet.create({
     color: 'rgba(255,255,255,0.6)',
     marginTop: 4,
   },
-  // Form kartı
   formCard: {
     backgroundColor: colors.white,
     borderTopLeftRadius: 30,
@@ -243,28 +260,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.15,
     shadowRadius: 12,
   },
-  girisBaslik: {
-    fontSize: 26,
-    fontWeight: 'bold',
-    color: colors.text,
-    marginBottom: 6,
-  },
-  baslikCizgi: {
-    width: 45,
-    height: 3,
-    backgroundColor: colors.primary,
-    borderRadius: 2,
-    marginBottom: 28,
-  },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    marginBottom: 22,
+    marginBottom: 18,
   },
   inputIconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 38,
+    height: 38,
+    borderRadius: 19,
     backgroundColor: '#FFF0F0',
     alignItems: 'center',
     justifyContent: 'center',
@@ -272,7 +276,7 @@ const styles = StyleSheet.create({
     marginTop: 14,
   },
   inputIconText: {
-    fontSize: 18,
+    fontSize: 16,
   },
   inputWrapper: {
     flex: 1,
@@ -286,7 +290,7 @@ const styles = StyleSheet.create({
   input: {
     borderBottomWidth: 1.5,
     borderBottomColor: '#EEEEEE',
-    fontSize: 16,
+    fontSize: 15,
     color: colors.text,
     paddingVertical: 8,
   },
@@ -301,35 +305,35 @@ const styles = StyleSheet.create({
   gozIcon: {
     fontSize: 18,
   },
-  girisBtn: {
+  kayitBtn: {
     backgroundColor: colors.primary,
     paddingVertical: 16,
     borderRadius: 14,
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: 8,
     elevation: 4,
     shadowColor: colors.primary,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
   },
-  girisBtnText: {
+  kayitBtnText: {
     color: colors.white,
     fontSize: 17,
     fontWeight: 'bold',
     letterSpacing: 2,
   },
-  kayitRow: {
+  girisRow: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 20,
   },
-  kayitText: {
+  girisText: {
     fontSize: 14,
     color: colors.gray,
   },
-  kayitLink: {
+  girisLink: {
     fontSize: 14,
     color: colors.primary,
     fontWeight: 'bold',

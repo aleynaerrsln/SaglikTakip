@@ -19,6 +19,7 @@ import IlacHatirlaticiScreen from './src/screens/IlacHatirlaticiScreen';
 import NefesEgzersiziScreen from './src/screens/NefesEgzersiziScreen';
 import BMIHesaplayiciScreen from './src/screens/BMIHesaplayiciScreen';
 import GirisScreen from './src/screens/GirisScreen';
+import KayitOlScreen from './src/screens/KayitOlScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -169,6 +170,11 @@ export default function App() {
         <Stack.Screen
           name="Giris"
           component={GirisScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="KayitOl"
+          component={KayitOlScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen
